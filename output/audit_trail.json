@@ -5479,5 +5479,39 @@
     "arguments": null,
     "result": "### Ticket **103 \u2014 Yale AI Club** requested a bulk discount on 20 CC-HOOD-NAVY hoodies, size M. ### Findings - **8** size-M hoodies are on hand; **12** need restocking. - Bulldog Print Co can ship now; lead time is **5 days**. If approved and funded, the additional 12 could arrive as early as **September 5, 2026**. - List price is **$58** and unit cost is **$22**. The proposed quote is **$50 ea...",
     "tokens": 5138
+  },
+  {
+    "timestamp": "2026-10-12T20:31:35.865788Z",
+    "run_id": "run-8f900105c0",
+    "ticket_id": 101,
+    "agent": "human",
+    "depth": 0,
+    "step_type": "human_decision",
+    "tool_name": "update_ticket_status",
+    "arguments": {
+      "ticket_id": 101,
+      "from": "in_progress",
+      "to": "resolved",
+      "updated_by": "Shop manager"
+    },
+    "result": "Closed by Shop manager: approvals #1 (invoice 501, $840.00) and #2 (PO 1 x CC-TEE-WHITE S, $8.00) approved and paid; draft #1 saved. Tee arrival (earliest 2026-09-05) to be confirmed separately.",
+    "tokens": 0
+  },
+  {
+    "timestamp": "2026-10-12T20:31:35.874236Z",
+    "run_id": "run-7b9175796d",
+    "ticket_id": 103,
+    "agent": "human",
+    "depth": 0,
+    "step_type": "human_decision",
+    "tool_name": "update_ticket_status",
+    "arguments": {
+      "ticket_id": 103,
+      "from": "waiting_approval",
+      "to": "resolved",
+      "updated_by": "Shop manager"
+    },
+    "result": "Closed by Shop manager: restock PO #4 ($264.00) was rejected, not pending; checking is $152.00; quote draft #4 saved. Database status was stale after the run.",
+    "tokens": 0
   }
 ]

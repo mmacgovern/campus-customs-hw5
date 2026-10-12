@@ -61,6 +61,7 @@ There is one card per agent that worked on the ticket. Each shows the number of 
 - Status pills: **Open** (grey), **Running** (blue, with a pulsing dot), **Awaiting approval** (amber, plus "⏳ 2 awaiting you · $848.00" on the card), and **Resolved** (green).
 - When a ticket becomes resolved (its run is finished and no approvals are pending), a red **RESOLVED rubber stamp** slams onto the card. It drops in from 2.6× size, overshoots and settles at a −12° tilt. A larger stamp also appears in the ticket header, and a toast says "Ticket 102 is resolved. 🎉".
 - When a run finishes but still needs you, a toast says "the team is done. 2 request(s) need your approval."
+- **Why "resolved" waits for the human:** a finished agent run can still leave money undecided. On ticket 101, $848 was waiting for approval when the team stopped working. Stamping a ticket closed while a payment or purchase is still pending would hide the one decision only a human may make. So the board shows **Awaiting approval** first and stamps **RESOLVED** the moment the last request is approved or rejected. A ticket with nothing to approve is stamped as soon as its run ends. The backend applies the same rule to the database, so the stamp and `tickets.status` always agree.
 
 **Why a stamp?** Closing a ticket should feel final and a little satisfying, like stamping paperwork at a real desk. It's also impossible to miss when scanning the queue.
 

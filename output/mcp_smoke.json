@@ -37,7 +37,11 @@
       "vendor_on_hold": true
     },
     "verified_against_db": true,
-    "verification_query": "SELECT i.id, i.vendor_id, i.amount, i.due_date, i.status, i.description, v.name AS vendor_name, v.specialty, v.lead_days, (SELECT date_today FROM desk LIMIT 1) AS shop_today, CAST(julianday((SELECT date_today FROM desk LIMIT 1)) - julianday(i.due_date) AS INTEGER) AS days_overdue, (SELECT COUNT(*) FROM invoices WHERE vendor_id = i.vendor_id AND status != 'paid') AS vendor_open_invoice_count FROM invoices i JOIN vendors v ON v.id = i.vendor_id WHERE i.id = 501;"
+    "verification_query": "SELECT i.id, i.vendor_id, i.amount, i.due_date, i.status, i.description, v.name AS vendor_name, v.specialty, v.lead_days, (SELECT date_today FROM desk LIMIT 1) AS shop_today, CAST(julianday((SELECT date_today FROM desk LIMIT 1)) - julianday(i.due_date) AS INTEGER) AS days_overdue, (SELECT COUNT(*) FROM invoices WHERE vendor_id = i.vendor_id AND status != 'paid') AS vendor_open_invoice_count FROM invoices i JOIN vendors v ON v.id = i.vendor_id WHERE i.id = 501;",
+    "verified_at": "2026-10-12, Problem 4, before the full run. data/campus_customs_new.db was a fresh copy of data/campus_customs.db at that time.",
+    "matches_original_db_now": true,
+    "matches_working_db_now": false,
+    "verification_note": "Re-checked after Problem 9: the verification_query run against data/campus_customs.db (the original, identical to the working copy when this test ran) still returns these exact values. Invoice 501 was paid during the Problem 9 run (approval #1, $840.00), so in today's working copy it shows status 'paid' and Bulldog Print Co is no longer on hold. Fields that differ in today's working copy: invoice.status 'open' -> 'paid'; vendor_on_hold True -> False."
   },
   {
     "prompt": "Ticket 102: Elm City Properties sent a rent notice for the Chapel Street shop (lease 1). When is the rent due compared with the shop's today, and is there enough cash to cover it?",
@@ -70,7 +74,11 @@
       "cash_after_rent": 1000
     },
     "verified_against_db": true,
-    "verification_query": "SELECT l.id, l.space_name, l.landlord, l.monthly_rent, l.next_due, l.notes, (SELECT date_today FROM desk LIMIT 1) AS shop_today, CAST(julianday(l.next_due) - julianday((SELECT date_today FROM desk LIMIT 1)) AS INTEGER) AS days_until_due, (SELECT SUM(balance) FROM cash_accounts) AS total_cash, (SELECT SUM(balance) FROM cash_accounts) - l.monthly_rent AS cash_after_rent FROM leases l WHERE l.id = 1;"
+    "verification_query": "SELECT l.id, l.space_name, l.landlord, l.monthly_rent, l.next_due, l.notes, (SELECT date_today FROM desk LIMIT 1) AS shop_today, CAST(julianday(l.next_due) - julianday((SELECT date_today FROM desk LIMIT 1)) AS INTEGER) AS days_until_due, (SELECT SUM(balance) FROM cash_accounts) AS total_cash, (SELECT SUM(balance) FROM cash_accounts) - l.monthly_rent AS cash_after_rent FROM leases l WHERE l.id = 1;",
+    "verified_at": "2026-10-12, Problem 4, before the full run. data/campus_customs_new.db was a fresh copy of data/campus_customs.db at that time.",
+    "matches_original_db_now": true,
+    "matches_working_db_now": false,
+    "verification_note": "Re-checked after Problem 9: the verification_query run against data/campus_customs.db (the original, identical to the working copy when this test ran) still returns these exact values. Rent for lease 1 was paid during the Problem 9 run (approval #3, $2,400.00), so in today's working copy next_due is 2026-10-02 and checking is $152.00 (see the Cash tab in output/desk_tickets.html). Fields that differ in today's working copy: lease.next_due '2026-09-02' -> '2026-10-02'; days_until_due 2 -> 32; total_cash 3400 -> 152.0; cash_after_rent 1000 -> -2248.0."
   },
   {
     "prompt": "Ticket 103: The Yale AI Club wants 20 CC-HOOD-NAVY hoodies in size M at a bulk discount. How many are in stock, how many short are we, and what are the unit cost and list price?",
@@ -130,6 +138,10 @@
       "restock_cost_at_unit_cost": 264
     },
     "verified_against_db": true,
-    "verification_query": "SELECT i.sku, i.name, i.size, i.qty, i.location, p.unit_cost, p.list_price, MAX(20 - i.qty, 0) AS shortfall, MAX(20 - i.qty, 0) * p.unit_cost AS restock_cost_at_unit_cost FROM inventory i JOIN pricing p ON p.sku = i.sku WHERE i.sku = 'CC-HOOD-NAVY' ORDER BY i.size;"
+    "verification_query": "SELECT i.sku, i.name, i.size, i.qty, i.location, p.unit_cost, p.list_price, MAX(20 - i.qty, 0) AS shortfall, MAX(20 - i.qty, 0) * p.unit_cost AS restock_cost_at_unit_cost FROM inventory i JOIN pricing p ON p.sku = i.sku WHERE i.sku = 'CC-HOOD-NAVY' ORDER BY i.size;",
+    "verified_at": "2026-10-12, Problem 4, before the full run. data/campus_customs_new.db was a fresh copy of data/campus_customs.db at that time.",
+    "matches_original_db_now": true,
+    "matches_working_db_now": true,
+    "verification_note": "Re-checked after Problem 9: the verification_query run against data/campus_customs.db (the original, identical to the working copy when this test ran) still returns these exact values. No hoodie stock or pricing changed during the Problem 9 run, so this output still matches today's working copy exactly."
   }
 ]

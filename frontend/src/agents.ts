@@ -14,6 +14,7 @@ export const AGENTS: Record<string, AgentMeta> = {
   facilities: { key: "facilities", name: "Facilities", role: "Leases & rent", icon: "🏢", color: "#a78bfa" },
   customer_service: { key: "customer_service", name: "Customer Service", role: "Draft replies", icon: "💬", color: "#f472b6" },
   human: { key: "human", name: "You (human)", role: "Approves money", icon: "✋", color: "#e2e8f0" },
+  backend: { key: "backend", name: "Backend", role: "Keeps statuses in sync", icon: "⚙️", color: "#94a3b8" },
 };
 
 export const TEAM_ORDER = ["boss", "inventory", "accounting", "facilities", "customer_service"];

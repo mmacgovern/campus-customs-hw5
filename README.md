@@ -62,6 +62,8 @@ The backend **starts the MCP server automatically** (over stdio) whenever the ag
 
 It waits quietly for an MCP client. Press Ctrl+C to stop it. See [mcp_server/README.md](mcp_server/README.md) for all 18 tools.
 
+**Connecting it to Claude Code:** `.mcp.json` registers the server as `campus-customs` using paths relative to the project folder (`.venv/Scripts/python.exe mcp_server/server.py`). Open Claude Code **in the `hw5/` folder** and approve the server when asked. On Mac/Linux, change `"command"` in `.mcp.json` to `.venv/bin/python`.
+
 ## 4. Start the backend (window 1)
 
 Run this from **inside** `backend/`:

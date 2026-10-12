@@ -183,7 +183,7 @@ The team lives in `backend/agents/`, with one file per agent and one system prom
 - `GET /cash` - Current checking balance from cash_accounts, plus the pending total and cash left after pending.
 - `POST /reset` - Copies `data/campus_customs.db` over `data/campus_customs_new.db` (the original is only read), recreates the helper tables, and clears in-memory run state. It keeps `output/audit_trail.json`, and refuses while a run is in progress (409).
 
-After every approve or reject, the backend writes a `human_decision` event to the audit trail. If that ticket's run is finished and nothing is still pending, it also sets the ticket to `resolved`.
+After every approve or reject, the backend writes a `human_decision` event to the audit trail. **Status sync:** after every approve or reject, and again whenever a run finishes, the backend checks that ticket. If its run is done and nothing is still pending, a ticket that is `in_progress` or `waiting_approval` is set to `resolved` through the MCP `update_ticket_status` tool, and a `status_sync` event is logged. This keeps the database in step with the board's "resolved" stamp. It was added after the full run, when tickets 101 and 103 were left stale.
 
 ## 6. Dashboard
 
@@ -219,4 +219,4 @@ On 2026-10-12, after a reset (starting checking **$3,400.00**, see [starting_bal
 **Lessons for the harness:**
 1. The Boss tends to call Accounting more than once, and brings in Customer Service even for a landlord notice. The prompts could be tighter about "one hand-off per specialist" and "no reply needed for rent notices".
 2. Nobody noticed that invoice 501 was already the rush reprint of the size-S tee, so a possible double order was approved.
-3. When a human approves or rejects *during* a run, the Boss can finish with stale facts. On ticket 103, the database status stayed `waiting_approval` even though the PO had been rejected.
+3. When a human approves or rejects *during* a run, the Boss can finish with stale facts. On ticket 103, the database status stayed `waiting_approval` even though the PO had been rejected, and the Boss left 101 `in_progress`. **Fixed:** the Shop manager formally closed both as `resolved` with `update_ticket_status` (logged as `human_decision` events), and the backend now re-syncs a ticket's status whenever a run ends (see section 5). All three tickets are now `resolved` in `data/campus_customs_new.db`.

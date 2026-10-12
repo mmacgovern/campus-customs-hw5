@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T16:04:59-04:00",
+  "generated_at": "2026-10-12T16:31:51-04:00",
   "source": "output/audit_trail.json (runs since the reset at 2026-10-12 3:52 PM EDT) + data/campus_customs_new.db",
   "cash": {
     "starting_checking_balance": 3400.0,
@@ -36,8 +36,9 @@
       "requester": "Tauhid Zaman",
       "final_status": {
         "board": "resolved",
-        "database": "in_progress"
+        "database": "resolved"
       },
+      "status_history": "The Boss left the ticket 'in_progress' at the end of its run (waiting for the tee to arrive). After the run, the Shop manager formally closed it as 'resolved' with update_ticket_status (human_decision event in output/audit_trail.json).",
       "outcome": "Invoice 501 ($840) paid to Bulldog Print Co, which cleared the vendor hold. 1 x CC-TEE-WHITE size S ordered ($8, about 5-day lead, earliest 2026-09-05). Customer draft saved. Note: invoice 501 was itself a 'Rush reprint CC-TEE-WHITE S', so the $8 PO may be a double order.",
       "run": {
         "run_id": "run-8f900105c0",
@@ -118,6 +119,7 @@
         "board": "resolved",
         "database": "resolved"
       },
+      "status_history": "The Boss set the ticket to 'resolved' at the end of its run, after the rent was approved.",
       "outcome": "Rent of $2,400 for lease 1 (Chapel Street shop) paid to Elm City Properties before its 2026-09-02 due date. The lease's next due date moved to 2026-10-02. Two landlord drafts saved, not sent.",
       "run": {
         "run_id": "run-811d6893a2",
@@ -184,8 +186,9 @@
       "requester": "Yale AI Club",
       "final_status": {
         "board": "resolved",
-        "database": "waiting_approval"
+        "database": "resolved"
       },
+      "status_history": "The Boss set 'waiting_approval' at the end of its run, not noticing PO #4 had already been rejected. After the run, the Shop manager formally closed it as 'resolved' with update_ticket_status (human_decision event in output/audit_trail.json). The backend now re-syncs status when a run ends.",
       "outcome": "Bulk quote of $50/hoodie (above the $22 cost floor) drafted for the Yale AI Club. Only 8 of 20 size M are in stock. The $264 restock PO for 12 was rejected by the human because only $152 was left, so no money moved and the remaining 12 are unfunded.",
       "run": {
         "run_id": "run-7b9175796d",

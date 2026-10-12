@@ -6,7 +6,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 AgentName = Literal["boss", "inventory", "accounting", "facilities", "customer_service"]
-StepType = Literal["thinking", "tool_call", "tool_result", "delegation", "final", "error",
+StepType = Literal["thinking", "tool_call", "tool_result", "delegation", "final", "error", "status_sync",
                    "human_decision"]
 TicketStatus = Literal["open", "in_progress", "waiting_approval", "resolved"]
 ApprovalKind = Literal["invoice", "rent", "purchase_order"]

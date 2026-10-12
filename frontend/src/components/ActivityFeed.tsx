@@ -108,6 +108,15 @@ function EventBody({ e }: { e: AgentEvent }) {
           <span className="ev-kind human">🖐 {humanText(e)}</span>
         </div>
       );
+    case "status_sync":
+      return (
+        <div className="ev-line">
+          <span className="ev-kind">
+            ⚙️ Ticket status synced: {String(e.arguments?.from ?? "?")} → {String(e.arguments?.to ?? "?")}
+          </span>
+          <span className="ev-result">{e.result}</span>
+        </div>
+      );
     case "error":
       return <div className="bad">⚠️ {e.result}</div>;
     default:

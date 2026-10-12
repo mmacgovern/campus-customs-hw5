@@ -68,16 +68,27 @@ async def _pending_approvals() -> list[dict]:
     return data.get("approvals", []) if data.get("found") else []
 
 
-async def _maybe_resolve(ticket_id: int | None) -> None:
-    """After a human decision: if the ticket's run is done and nothing is pending, mark it resolved."""
+async def _maybe_resolve(ticket_id: int | None, reason: str = "All approvals decided by a human.") -> None:
+    """Keep the database in step with the board's rule: once a ticket's run has finished and
+    nothing is pending for it, its status becomes 'resolved'.
+
+    Called after every human approve/reject, and again when a run ends (the Boss may have
+    written a status before a human decided mid-run, which left it stale).
+    """
     if ticket_id is None or _is_running(ticket_id):
         return
     if any(a["ticket_id"] == ticket_id for a in await _pending_approvals()):
         return
     ticket = await worker.call_tool("get_ticket", ticket_id=ticket_id)
-    if ticket.get("found") and ticket["ticket"]["status"] == "waiting_approval":
-        await worker.call_tool("update_ticket_status", ticket_id=ticket_id, status="resolved",
-                               note="All approvals decided by a human.", updated_by="approval route")
+    if not ticket.get("found") or ticket["ticket"]["status"] not in ("in_progress", "waiting_approval"):
+        return
+    before = ticket["ticket"]["status"]
+    result = await worker.call_tool("update_ticket_status", ticket_id=ticket_id, status="resolved",
+                                    note=reason, updated_by="backend status sync")
+    append_event(run_id=LATEST_RUN.get(ticket_id, "status-sync"), ticket_id=ticket_id, agent="backend",
+                 step_type="status_sync", tool_name="update_ticket_status",
+                 arguments={"ticket_id": ticket_id, "from": before, "to": "resolved"},
+                 result=f"{reason} ({'ok' if result.get('updated') else result})")
 
 
 def _log_decision(approval: dict | None, approval_id: int, tool: str, args: dict, result: Any) -> None:
@@ -157,6 +168,9 @@ async def run_ticket_route(ticket_id: int):
         except Exception as exc:  # pragma: no cover - safety net
             info.update(status="error", result={"resolution": f"{type(exc).__name__}: {exc}"})
         info["finished_at"] = _now()
+        if info["status"] == "completed":
+            # Re-check approvals now that the run is over, so the database matches the board.
+            worker.submit(_maybe_resolve(ticket_id, "Run finished with no pending approvals."))
 
     worker.submit(run_ticket(ticket_id, run_id=run_id)).add_done_callback(_done)
     return {"run_id": run_id, "ticket_id": ticket_id, "status": "running",

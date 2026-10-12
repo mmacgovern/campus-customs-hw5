@@ -31,7 +31,7 @@ export interface Ticket {
 }
 
 export type StepType =
-  | "thinking" | "tool_call" | "tool_result" | "delegation" | "final" | "error" | "human_decision";
+  | "thinking" | "tool_call" | "tool_result" | "delegation" | "final" | "error" | "human_decision" | "status_sync";
 
 export interface AgentEvent {
   id: number;

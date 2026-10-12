@@ -87,7 +87,7 @@
 <header>
   <div class="wrap">
     <h1>Campus Customs Desk Tickets</h1>
-    <p class="sub">Shop "today" (desk table): <b>2026-08-31</b> · Cash on hand: <b>$3,400.00</b> (checking) · Expected plan written before the run (Problem 6)</p>
+    <p class="sub">Shop "today" (desk table): <b>2026-08-31</b> · Checking: starting <b>$3,400.00</b> → ending <b>$152.00</b> · Expected plan (Problem 6) + Actual results from the full run (Problem 9)</p>
     <nav role="tablist" aria-label="Desk tickets">
       <button role="tab" id="tab-t101" aria-controls="t101" aria-selected="true">Ticket 101</button>
       <button role="tab" id="tab-t102" aria-controls="t102" aria-selected="false">Ticket 102</button>
@@ -174,7 +174,7 @@
     <dl class="concrete">
       <dt>Run</dt><dd><code>run-8f900105c0</code> · 3:56:53 to 3:57:51 PM EDT on 2026-10-12 · <b>75,419 tokens</b> · 38 tool calls · 5 hand-offs</dd>
       <dt>Agents who worked</dt><dd>Boss, Inventory, Accounting, Customer Service, and you (2 approvals). Facilities was not involved.</dd>
-      <dt>Board status</dt><dd><b>Resolved</b> (the run finished and nothing is pending). In the database, the Boss chose to leave ticket 101 as <code>in_progress</code> "until stock arrives and the customer order can be fulfilled."</dd>
+      <dt>Final status</dt><dd><b>Resolved</b> on the board and in the database. At the end of its run, the Boss had left ticket 101 as <code>in_progress</code> "until stock arrives and the customer order can be fulfilled." After the run, I (Shop manager) formally closed it as <code>resolved</code> with <code>update_ticket_status</code>, noting that both approvals were paid and the tee's arrival will be confirmed separately. This is logged as a <code>human_decision</code> in the audit trail.</dd>
     </dl>
 
     <h3>Delegations, in order</h3>
@@ -398,7 +398,7 @@
     <dl class="concrete">
       <dt>Run</dt><dd><code>run-7b9175796d</code> · 3:59:09 to 4:00:13 PM EDT · <b>63,434 tokens</b> · 28 tool calls · 4 hand-offs</dd>
       <dt>Agents who worked</dt><dd>Boss, Inventory, Accounting, Customer Service, and you (1 rejection). Facilities was not involved.</dd>
-      <dt>Board status</dt><dd><b>Resolved</b> (the run finished and nothing is pending). In the database, the Boss left ticket 103 as <code>waiting_approval</code>, because it still thought PO #4 was pending (see below).</dd>
+      <dt>Final status</dt><dd><b>Resolved</b> on the board and in the database. At the end of its run, the Boss had set <code>waiting_approval</code>, because it still thought PO #4 was pending (see below). After the run, I (Shop manager) formally closed it as <code>resolved</code> with <code>update_ticket_status</code>, noting that PO #4 was rejected and no money moved. This is logged as a <code>human_decision</code> in the audit trail.</dd>
     </dl>
 
     <h3>Delegations, in order</h3>
@@ -436,7 +436,7 @@
       <b>The vendor hold was gone</b> (unlike the plan), because ticket 101's payment had cleared it.
       <b>Same specialists as planned</b> (no Facilities), but Accounting was called twice: the planned single combined call didn't happen.
       <b>The discount was decided by the Boss, not a human.</b> $50 (14% off, $28 margin per hoodie) is safely above the $22 floor, but the plan expected a human to sign off on the price before it went into a customer draft.
-      <b>A stale ending.</b> You rejected #4 while the team was still working, so the Boss's final note still calls it "pending" and set the database status to <code>waiting_approval</code>.
+      <b>A stale ending.</b> You rejected #4 while the team was still working, so the Boss's final note still calls it "pending" and set the database status to <code>waiting_approval</code>. I closed the ticket by hand afterward, and the backend now re-checks approvals and syncs the status whenever a run ends, so this can't recur.
     </div>
   </div>
 </section>
@@ -500,7 +500,7 @@
     <p>I was honestly impressed by how fast the runs were and how well the agents worked together. Ticket 101 went from the Boss reading the ticket to a final resolution in <b>58 seconds</b> (3:56:53 to 3:57:51 PM). Ticket 102 took <b>50 seconds</b> and ticket 103 <b>64 seconds</b>. In that time the team made 38, 21 and 28 MCP tool calls. What really got me was seeing the Boss send two hand-offs <i>in the same second</i>: on ticket 101, Boss → Inventory and Boss → Accounting both went out at 3:56:54. Then Inventory turned around and handed its findings to Accounting at depth 2. It felt like watching a real team split up the work.</p>
 
     <h3>What frustrated me</h3>
-    <p>Two things. First, the board stamped all three tickets <b>RESOLVED</b>, but in <code>data/campus_customs_new.db</code> ticket 101 is still <code>in_progress</code> and ticket 103 is <code>waiting_approval</code>. Only 102 says <code>resolved</code>. The board uses its own rule (run finished + nothing pending), while the database holds whatever the Boss last wrote with <code>update_ticket_status</code>. Two different "truths" is exactly what you don't want on an operations desk. Second, the token bill: <b>75,419</b> tokens for ticket 101, <b>48,040</b> for 102 and <b>63,434</b> for 103, which is <b>186,893 tokens</b> in total. That's a lot for one tee, one rent payment and one quote.</p>
+    <p>Two things. First, the board stamped all three tickets <b>RESOLVED</b>, but right after the runs, <code>data/campus_customs_new.db</code> still had ticket 101 as <code>in_progress</code> and ticket 103 as <code>waiting_approval</code>. Only 102 said <code>resolved</code>. The board uses its own rule (run finished + nothing pending), while the database held whatever the Boss last wrote with <code>update_ticket_status</code>. Two different "truths" is exactly what you don't want on an operations desk. I had to close 101 and 103 by hand, and then add a backend fix so it can't happen again. Second, the token bill: <b>75,419</b> tokens for ticket 101, <b>48,040</b> for 102 and <b>63,434</b> for 103, which is <b>186,893 tokens</b> in total. That's a lot for one tee, one rent payment and one quote.</p>
 
     <h3>Which agent impressed me, and which disappointed me</h3>
     <p>The same agent did both: <b>the Boss</b>. It impressed me because it never sent a specialist that had no business on a ticket. Facilities stayed out of 101 and 103, and Inventory stayed out of 102. On ticket 102 it even noticed mid-run that I had approved request #3, and asked Customer Service for a corrected draft (#3, "The rent payment has been executed") instead of leaving the wrong one (#2, "pending human approval") as the latest. But it disappointed me on ticket 103. I rejected PO #4 ($264.00 to Bulldog Print Co) at 3:59:52 PM, and 21 seconds later the Boss still wrote "PO approval #4 is pending" in its final note and set the ticket to <code>waiting_approval</code>. It never re-checked <code>list_approvals</code> before closing out.</p>
@@ -518,7 +518,7 @@
       <li><b>Put the facts in the delegation task</b> (SKU, invoice id, amounts) so teammates don't re-read the ticket.</li>
       <li><b>No Customer Service for rent notices.</b></li>
       <li><b>A required final check:</b> the Boss calls <code>list_approvals</code> right before <code>update_ticket_status</code>.</li>
-      <li><b>Re-sync after each run:</b> the backend re-checks a ticket's status when its run ends, so the board and database always agree.</li>
+      <li><b>Re-sync after each run:</b> the backend re-checks a ticket's status when its run ends, so the board and database always agree. <i>(Done: I added this after the audit.)</i></li>
     </ul>
   </div>
 
@@ -559,13 +559,13 @@
       <tr><th>Ticket</th><th>Matched my plan</th><th>Differed from my plan</th></tr>
       <tr><td><b>101</b></td>
         <td>The Boss called Inventory first, which confirmed CC-TEE-WHITE size S = 0. The specialists were exactly Inventory, Accounting and Customer Service, with no Facilities. The $840.00 invoice 501 payment was prepared and approved. The tools I listed (<code>check_stock_and_pricing</code>, <code>list_vendors</code>, <code>get_invoice_and_vendor_hold</code>, <code>create_payment_request</code>, <code>save_customer_draft</code>) were all used.</td>
-        <td>5 hand-offs instead of 3, with Accounting hit three times. I flagged the $8 PO as "maybe, only if invoice 501 doesn't already cover the tee"; the team prepared it without asking, and I approved it. The ticket stayed <code>in_progress</code> in the database instead of <code>waiting_approval</code>.</td></tr>
+        <td>5 hand-offs instead of 3, with Accounting hit three times. I flagged the $8 PO as "maybe, only if invoice 501 doesn't already cover the tee"; the team prepared it without asking, and I approved it. The Boss left the ticket <code>in_progress</code> in the database instead of <code>waiting_approval</code>, until I closed it by hand.</td></tr>
       <tr><td><b>102</b></td>
         <td>Facilities was called first and confirmed $2,400.00 due 2026-09-02. Accounting prepared one rent request with <code>create_payment_request</code> (kind "rent", ref_id 1). I approved it before the due date, and next_due moved to 2026-10-02 as I predicted.</td>
         <td>I said Customer Service should <b>not</b> be involved, but it was, twice. I also expected Facilities → Accounting; instead the Boss called both itself, in parallel. 4 hand-offs instead of 2.</td></tr>
       <tr><td><b>103</b></td>
         <td>The Boss called Inventory first: CC-HOOD-NAVY size M was 8 of 20 in stock, short 12, so a $264.00 PO to Bulldog Print Co. The cash conflict I predicted happened exactly: only $152 was left after invoice 501 + the tee + rent, so the PO couldn't be paid.</td>
-        <td>I assumed the vendor would still be on hold, but ticket 101 had already cleared it. Accounting was called twice instead of my one combined call. The discount was set by the Boss ($50) rather than left "under review" for a human. The final status was stale (<code>waiting_approval</code> after my rejection).</td></tr>
+        <td>I assumed the vendor would still be on hold, but ticket 101 had already cleared it. Accounting was called twice instead of my one combined call. The discount was set by the Boss ($50) rather than left "under review" for a human. The final status was stale (<code>waiting_approval</code> after my rejection) until I closed it by hand.</td></tr>
     </table></div>
     <div class="callout">Overall the team picked the right <i>people</i> every time, but used more <i>hand-offs</i> than I planned on every ticket: <b>13 actual vs. 8 planned</b>.</div>
   </div>
@@ -612,7 +612,7 @@
 </section>
 
 </main>
-<footer>Campus Customs Multi-Agent Operations · HW5 · All figures come from data/campus_customs_new.db (reset to the original)</footer>
+<footer>Campus Customs Multi-Agent Operations · HW5 · Expected figures come from the reset working copy (identical to data/campus_customs.db). Actual and Cash figures come from data/campus_customs_new.db after the full run on 2026-10-12, plus output/audit_trail.json.</footer>
 
 <script>
   (function () {
