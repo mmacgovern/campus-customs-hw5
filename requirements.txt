@@ -1,0 +1,20 @@
+# Campus Customs Multi-Agent Operations (HW5). Install with:
+#   .venv\Scripts\python -m pip install -r requirements.txt
+
+# --- MCP server (mcp_server/) ---
+fastmcp
+
+# --- Agents (backend/) — Pydantic AI, called through Portkey ---
+pydantic-ai
+pydantic
+
+# --- API server (backend/) ---
+fastapi
+uvicorn[standard]
+
+# --- Helpers ---
+python-dotenv            # loads PORTKEY_API_KEY from .env at run time
+httpx                    # HTTP client (also used by FastAPI's TestClient)
+
+# --- Dev tool: board screenshots (tools/capture_board.py) ---
+playwright               # then run: .venv\Scripts\python -m playwright install chromium

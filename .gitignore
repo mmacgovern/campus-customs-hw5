@@ -1,0 +1,22 @@
+# ---- Secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Assignment docs (not committed) ----
+docs/
+
+# ---- Python ----
+.venv/
+__pycache__/
+*.py[cod]
+
+# ---- Node / front end ----
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# Note: the .db files in data/ are committed on purpose (not ignored).
+
+# ---- Local Claude app config (machine-specific paths) ----
+.claude/

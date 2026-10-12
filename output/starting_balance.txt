@@ -1,0 +1,7 @@
+Campus Customs - starting checking balance (before the full run)
+Recorded at: 2026-10-12T15:52:31-04:00
+Shop today (desk table): 2026-08-31
+Account: checking
+Balance: $3,400.00
+Balance date in cash_accounts: 2026-08-31
+Source: data/campus_customs_new.db, cash_accounts table, right after reset from data/campus_customs.db
