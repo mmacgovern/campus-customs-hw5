@@ -688,37 +688,3 @@ None needed. When the model-name check stopped the push (the audit trail quoted 
 ### What was lacking after the first prompt (one sentence)
 
 N/A — no follow-up prompt was needed, though the first prompt didn't say what to do if the audit trail itself failed the model-name check.
-
----
-
-## Final Audit - Follow-up prompts across Problems 1-11 (before submitting)
-
-### Prompt(s) I typed
-
-**Audit request** (I pasted the full assignment text for Problems 1-11 below this message):
-
-```text
-Ok Claude I have a few rounds of auditing I would like to do before submitting. Below are all 11 questions. Review to ensure I fully answer each question. If you identify an issue, do not make changes yet. Consolidate all of the issues and provide a recommended fix. I'll review case by case for changes. Does this make sense?
-```
-
-**Approval of fixes:**
-
-```text
-Ok I approve the following recommended fixes on 1, 2a, 3, 5, and 7. Please implement.
-```
-
-### What the audit changed
-
-| Fix | Problem | Change |
-|---|---|---|
-| 1 | Problem 4 | `output/mcp_smoke.json`: each entry now notes when it was verified (before the full run), confirms it still matches `data/campus_customs.db`, and explains which values changed in the working copy after Problem 9. |
-| 2a | Problem 9 | Tickets 101 and 103 formally closed as `resolved` by the Shop manager with the MCP tool `update_ticket_status` (logged as `human_decision` events). The backend now re-syncs a ticket's status whenever a run ends. `resolved_tickets.json`, `resolved_board.html`, `desk_tickets.html`, and `harness.md` updated to match. |
-| 3 | Problems 4 and 11 | `.mcp.json` uses relative paths so graders can use it after cloning; README explains how. |
-| 5 | Problem 8 | `output/design.md` explains why the RESOLVED stamp waits for every approval to be decided. |
-| 7 | Problems 6 and 9 | `desk_tickets.html` header and footer now show starting $3,400.00 → ending $152.00 and where each figure comes from. |
-
-Not applied (my choice): adding the Problem 10 follow-up to its section (4), "in my own words" summaries (6), and the harness section 1 wording (8).
-
-### What was lacking after the first prompt (one sentence)
-
-The original problem prompts didn't ask for a final cross-check, so the smoke test went stale after the full run, two tickets were never resolved in the database, and `.mcp.json` only worked on my computer.
