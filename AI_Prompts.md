@@ -646,12 +646,45 @@ N/A — no follow-up was needed.
 
 ### Prompt(s) I typed
 
-_[PLACEHOLDER — to be filled in at the end of Problem 11]_
+```text
+Problem 11 - Submit to GitHub.
+ 
+1. Write or finish README.md at the project root: what the project is;
+   setup (create .venv and install requirements.txt, run npm install in
+   frontend/, copy .env.example to .env and add PORTKEY_API_KEY); how to
+   copy the original database to the working copy for a clean run; how to
+   start the MCP server (standalone command, and note that the backend
+   launches it automatically); how to start the FastAPI backend; how to
+   start the React board; and to reset the database before a full
+   three-ticket run. Include the project file layout.
+2. Safety checks before pushing (stop and tell me if any fail):
+   - .env is in .gitignore and not tracked by git.
+   - Search the whole project for my actual API key value or any other
+     secret.
+   - Both data/campus_customs.db and data/campus_customs_new.db will be
+     included.
+   - No model name other than gpt-6-luna appears anywhere (show the search).
+   - node_modules/, .venv/ and docs/ are ignored.
+3. Check every file in the expected layout exists: AI_Prompts.md,
+   requirements.txt, .env.example, .gitignore, .mcp.json, README.md,
+   data/ (both dbs), mcp_server/server.py, mcp_server/README.md,
+   frontend/, backend/main.py, backend/models.py, the 5 prompt files in
+   backend/prompts/, and in output/: harness.md, mcp_smoke.json,
+   desk_tickets.html, design.md, resolved_tickets.json,
+   resolved_board.html, audit_trail.json. List anything missing.
+4. Initialize git if needed, commit everything, and create a PUBLIC GitHub
+   repo named campus-customs-hw5 with the GitHub CLI (gh), then push. If
+   gh isn't installed or I'm not logged in, stop and walk me through it
+   step by step.
+5. Save the repo URL in output/github_url.txt, then commit and push that.
+6. Update AI_Prompts.md for Problem 11, commit and push again.
+7. Confirm the repo is public and give me the URL.
+```
 
 ### Follow-up prompt (if needed)
 
-_[PLACEHOLDER — to be filled in at the end of Problem 11]_
+None needed. When the model-name check stopped the push (the audit trail quoted the provider's internal model name from an old error), I answered Claude's two multiple-choice questions instead of typing a new prompt: "Redact that word" and "Leave it out" (keep `.claude/` out of the repo).
 
 ### What was lacking after the first prompt (one sentence)
 
-_[PLACEHOLDER — to be filled in at the end of Problem 11]_
+N/A — no follow-up prompt was needed, though the first prompt didn't say what to do if the audit trail itself failed the model-name check.
